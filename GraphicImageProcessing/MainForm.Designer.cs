@@ -1,6 +1,6 @@
 ﻿namespace GraphicImageProcessing
 {
-	partial class Form1
+	partial class MainForm
 	{
 		/// <summary>
 		/// Требуется переменная конструктора.
@@ -38,6 +38,7 @@
 			this.blueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.makeBlackWhiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -71,7 +72,8 @@
 			// editToolStripMenuItem
 			// 
 			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.chanelToolStripMenuItem});
+            this.chanelToolStripMenuItem,
+            this.makeBlackWhiteToolStripMenuItem});
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
 			this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
 			this.editToolStripMenuItem.Text = "Edit";
@@ -83,7 +85,7 @@
             this.greenToolStripMenuItem,
             this.blueToolStripMenuItem});
 			this.chanelToolStripMenuItem.Name = "chanelToolStripMenuItem";
-			this.chanelToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.chanelToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
 			this.chanelToolStripMenuItem.Text = "Chanel";
 			// 
 			// redToolStripMenuItem
@@ -91,7 +93,7 @@
 			this.redToolStripMenuItem.Checked = true;
 			this.redToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.redToolStripMenuItem.Name = "redToolStripMenuItem";
-			this.redToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.redToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
 			this.redToolStripMenuItem.Text = "Red";
 			this.redToolStripMenuItem.Click += new System.EventHandler(this.ChanelToolStripMenuItem_Click);
 			// 
@@ -100,7 +102,7 @@
 			this.greenToolStripMenuItem.Checked = true;
 			this.greenToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.greenToolStripMenuItem.Name = "greenToolStripMenuItem";
-			this.greenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.greenToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
 			this.greenToolStripMenuItem.Text = "Green";
 			this.greenToolStripMenuItem.Click += new System.EventHandler(this.ChanelToolStripMenuItem_Click);
 			// 
@@ -109,7 +111,7 @@
 			this.blueToolStripMenuItem.Checked = true;
 			this.blueToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.blueToolStripMenuItem.Name = "blueToolStripMenuItem";
-			this.blueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.blueToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
 			this.blueToolStripMenuItem.Text = "Blue";
 			this.blueToolStripMenuItem.Click += new System.EventHandler(this.ChanelToolStripMenuItem_Click);
 			// 
@@ -123,14 +125,21 @@
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
-			// Form1
+			// makeBlackWhiteToolStripMenuItem
+			// 
+			this.makeBlackWhiteToolStripMenuItem.Name = "makeBlackWhiteToolStripMenuItem";
+			this.makeBlackWhiteToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+			this.makeBlackWhiteToolStripMenuItem.Text = "MakeBlackWhite";
+			this.makeBlackWhiteToolStripMenuItem.Click += new System.EventHandler(this.makeBlackWhiteToolStripMenuItem_Click);
+			// 
+			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1092, 600);
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
-			this.Name = "Form1";
+			this.Name = "MainForm";
 			this.Text = "Form1";
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
@@ -151,6 +160,7 @@
 		private System.Windows.Forms.ToolStripMenuItem redToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem greenToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem blueToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem makeBlackWhiteToolStripMenuItem;
 	}
 }
 

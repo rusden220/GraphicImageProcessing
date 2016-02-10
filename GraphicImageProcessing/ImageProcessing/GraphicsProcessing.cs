@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
+
 
 namespace GraphicImageProcessing.ImageProcessing
 {
 	[Flags]
+	
 	public enum BitmapChanel
 	{
 		None = 0,
@@ -12,14 +16,23 @@ namespace GraphicImageProcessing.ImageProcessing
 		Green = 0x2,
 		Blue = 0x4
 	}
-	public class GraphicsProcessing
+	public static class GraphicsProcessing
 	{
-		private Bitmap _mainBitmap;
-
-		public Bitmap MainBitmap
+		public static Bitmap MakeBlackWhite(Bitmap bitmap, int gradation)
 		{
-			get { return _mainBitmap; }
-			set { _mainBitmap = value; }
+			Bitmap result = new Bitmap(bitmap);
+			int gray = 0;
+			Color color;
+			for (int i = 0; i < bitmap.Width; i++)
+			{
+				for (int j = 0; j < bitmap.Height; j++)
+				{
+					color = bitmap.GetPixel(i, j);
+					gray = (color.R + color.G + color.B) / 3;
+					result.SetPixel(i,j, Color.FromArgb(gray, gray, gray));
+				}
+			}
+			return result;
 		}
 		/// <summary>
 		/// Make TestBitmap, 10 gray rectangles 

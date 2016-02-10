@@ -7,7 +7,7 @@ using GraphicImageProcessing.ImageProcessing;
 
 namespace GraphicImageProcessing
 {
-	public partial class Form1 : Form
+	public partial class MainForm : Form
 	{
 		private Bitmap _mainBitmap;
 		private Bitmap _originalBitmap;
@@ -16,14 +16,13 @@ namespace GraphicImageProcessing
 		//future
 		private Thread _workingThread;
 
-		public Form1()
-		{
-			
+		public MainForm()
+		{			
 			InitializeComponent();
 			_mainBitmapPointX = 0;
 			_mainBitmapPointY = menuStrip1.Height;
 			_originalBitmap = GraphicsProcessing.GetTestBitmap(400, 200);
-			_mainBitmap = (Bitmap)_originalBitmap.Clone();
+			_mainBitmap = new Bitmap(_originalBitmap);
 		}
 		/// <summary>
 		/// ReDrawFunction
@@ -63,6 +62,12 @@ namespace GraphicImageProcessing
 			//make in thread
 			_mainBitmap = GraphicsProcessing.ChooseChannel(_originalBitmap, bc);
 			
+			this.Invalidate();
+		}
+
+		private void makeBlackWhiteToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			_mainBitmap = GraphicsProcessing.MakeBlackWhite(_originalBitmap, 255);
 			this.Invalidate();
 		}		
 
