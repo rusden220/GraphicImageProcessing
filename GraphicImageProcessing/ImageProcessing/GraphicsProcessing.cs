@@ -3,21 +3,125 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
+using GraphicImageProcessing.Pointer;
 
 
 namespace GraphicImageProcessing.ImageProcessing
 {
-	[Flags]
-	
+	[Flags]	
 	public enum BitmapChanel
 	{
-		None = 0,
-		Red = 0x1,
+		None  = 0x0,
+		Red   = 0x1,
 		Green = 0x2,
-		Blue = 0x4
+		Blue  = 0x4
 	}
 	public static class GraphicsProcessing
 	{
+		public static bool isRelease()
+		{
+#if DEBUG
+			return false;
+#else
+			return true;
+#endif
+
+		}
+		public static Bitmap OptimisationEasy(Bitmap bitmap)
+		{
+			Bitmap result = new Bitmap(bitmap);
+			//get pointer via BitmapData
+			BitmapData bmpData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			IntPtr ptr = bmpData.Scan0;
+			// Задаём массив из Byte и помещаем в него надор данных.
+			// int numBytes = bmp.Width * bmp.Height * 3; 
+			//На 3 умножаем - поскольку RGB цвет кодируется 3-мя байтами
+			//Либо используем вместо Width - Stride
+			int numBytes = bmpData.Stride * bitmap.Height;
+			int widthBytes = bmpData.Stride;
+			byte[] rgbValues = new byte[numBytes];
+			// Копируем значения в массив.
+			Marshal.Copy(ptr, rgbValues, 0, numBytes);
+			byte color_b = 0;
+			// Перебираем пикселы по 3 байта на каждый и меняем значения
+			for (int i = 0; i < rgbValues.Length; i++)
+			{
+				int value = rgbValues[i] + rgbValues[i + 1] + rgbValues[i + 2];	
+				color_b = Convert.ToByte(value / 3);
+				rgbValues[i] = color_b;
+				rgbValues[++i] = color_b;
+				rgbValues[++i] = color_b;
+				i++;
+			}
+			// Копируем набор данных обратно в изображение
+			Marshal.Copy(rgbValues, 0, ptr, numBytes);
+			// Разблокируем набор данных изображения в памяти.
+			result.UnlockBits(bmpData);
+			return result;
+		}
+//#if DEBUG
+		public static Bitmap OptimisationUnsafe(Bitmap bitmap)
+		{
+			Bitmap result = new Bitmap(bitmap);
+			int len = bitmap.Width * bitmap.Height * 4;//ARGB
+			byte color_b = 0;
+
+			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+			ObjectPointer op = new ObjectPointer(bitmapData);
+			op.IntPointer = bitmapData.Scan0.ToInt32();
+			
+			unsafe
+			{
+				byte* ptr = (byte*)op.IntPointer;
+				for (int i = 0; i < len; i++)
+				{
+					int value = ptr[i] + ptr[i + 1] + ptr[i + 2];
+					color_b = Convert.ToByte(value / 3);
+					ptr[i] = color_b;
+					ptr[++i] = color_b;
+					ptr[++i] = color_b;
+					i++;
+				}
+			}
+			result.UnlockBits(bitmapData);
+			return result;
+		}
+		public static Bitmap OptimisationPointer(Bitmap bitmap)
+		{
+			Bitmap result = new Bitmap(bitmap);
+			int len = bitmap.Width * bitmap.Height * 4;//ARGB
+			byte color_b = 0;
+
+			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+			ObjectPointer op = new ObjectPointer(bitmapData);
+			op.IntPointer = bitmapData.Scan0.ToInt32();
+
+			var ptr = op.GetArrayPointer<byte>();
+			for (int i = 0; i < len; i++)
+			{
+				int value = ptr[i] + ptr[i + 1] + ptr[i + 2];
+				color_b = Convert.ToByte(value / 3);
+				ptr[i] = color_b;
+				ptr[++i] = color_b;
+				ptr[++i] = color_b;
+				i++;
+			}
+
+			result.UnlockBits(bitmapData);
+			return result;
+		}
+//#endif
+
+
+
+		/// <summary>
+		/// Make from a color image black and white 
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <param name="gradation"></param>
+		/// <returns></returns>
 		public static Bitmap MakeBlackWhite(Bitmap bitmap, int gradation)
 		{
 			Bitmap result = new Bitmap(bitmap);

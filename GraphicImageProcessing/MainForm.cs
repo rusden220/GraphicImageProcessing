@@ -67,7 +67,9 @@ namespace GraphicImageProcessing
 
 		private void makeBlackWhiteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			_mainBitmap = GraphicsProcessing.MakeBlackWhite(_originalBitmap, 255);
+			//_mainBitmap = GraphicsProcessing.MakeBlackWhite(_originalBitmap, 255);
+			_mainBitmap = GraphicsProcessing.OptimisationPointer(_originalBitmap);
+
 			this.Invalidate();
 		}		
 
