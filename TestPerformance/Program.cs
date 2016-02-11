@@ -9,7 +9,6 @@ namespace TestPerformance
 	{
 		private int _amountTest;
 		private Action _testedFunction;
-	
 		public TimeTestPerformance() { }
 		public TimeTestPerformance(Action action) { _testedFunction = action; }
 
@@ -34,11 +33,36 @@ namespace TestPerformance
 				_testedFunction();
 				sw.Stop();
 				avgTime += sw.ElapsedTicks / _amountTest;
+				if (i % 100 == 0) Console.Write("#");
 			}
+			Console.WriteLine();
 			return avgTime;
 		}
-		
-		
+		public double Start(Func<Bitmap, Bitmap> action, int imageSize)
+		{
+			double avgTime = 0D;
+			Stopwatch sw = new Stopwatch();
+			Bitmap bm = new Bitmap(imageSize, imageSize);
+			for (int i = 0; i < _amountTest; i++)
+			{
+				bm = new Bitmap(imageSize, imageSize);
+				Graphics.FromImage(bm).Clear(Color.LightGreen);
+				sw.Reset();
+				sw.Start();
+
+				var temp = action(bm);
+
+				sw.Stop();
+				temp = null;
+				bm = null;
+				GC.Collect(2);
+				avgTime += sw.ElapsedTicks / _amountTest;
+
+				if (i % 100 == 0) Console.Write("#");
+			}
+			Console.WriteLine();
+			return avgTime;
+		}
 	}
 	class Program
 	{
@@ -49,24 +73,27 @@ namespace TestPerformance
 			if (GraphicsProcessing.isRelease())
 			{
 				Console.WriteLine("Release");
-				int amountTest = 1000;
-				int imageSize = 1000;
+				int amountTest = 2000;
+				int imageSize = 500;
 				Bitmap bm = new Bitmap(imageSize, imageSize);
 				Graphics.FromImage(bm).Clear(Color.LightGreen);
 				Console.WriteLine("Start timeEasy");
-				var timeEasy = new TimeTestPerformance() { AmountTest = amountTest, TestedFunction = () => { GraphicsProcessing.OptimisationEasy(bm); } }.Start();
+				//var timeEasy = new TimeTestPerformance() { AmountTest = amountTest, TestedFunction = () => { GraphicsProcessing.OptimisationEasy(bm); } }.Start();
+				var timeEasy = new TimeTestPerformance() { AmountTest = amountTest }.Start(GraphicsProcessing.OptimisationEasy, imageSize);
 				Console.WriteLine("timeEasy: " + timeEasy.ToString());
 
 				bm = new Bitmap(imageSize, imageSize);
 				Graphics.FromImage(bm).Clear(Color.LightGreen);
 				Console.WriteLine("Start timePointer");
-				var timePointer = new TimeTestPerformance() { AmountTest = amountTest, TestedFunction = () => { GraphicsProcessing.OptimisationPointer(bm); } }.Start();
+				//var timePointer = new TimeTestPerformance() { AmountTest = amountTest, TestedFunction = () => { var bm1 = GraphicsProcessing.OptimisationPointer(bm); bm1 = null;} }.Start();
+				var timePointer = new TimeTestPerformance() { AmountTest = amountTest }.Start(GraphicsProcessing.OptimisationPointer, imageSize);
 				Console.WriteLine("timePointer: " + timePointer.ToString());
 
 				bm = new Bitmap(imageSize, imageSize);
 				Graphics.FromImage(bm).Clear(Color.LightGreen);
 				Console.WriteLine("Start timeUnsafe");
-				var timeUnsafe = new TimeTestPerformance() { AmountTest = amountTest, TestedFunction = () => { GraphicsProcessing.OptimisationUnsafe(bm); } }.Start();
+				//var timeUnsafe = new TimeTestPerformance() { AmountTest = amountTest, TestedFunction = () => { GraphicsProcessing.OptimisationUnsafe(bm); } }.Start();
+				var timeUnsafe = new TimeTestPerformance() { AmountTest = amountTest }.Start(GraphicsProcessing.OptimisationUnsafe, imageSize);				
 				Console.WriteLine("timeUnsafe: " + timeUnsafe.ToString());
 
 			}

@@ -45,6 +45,5 @@ namespace GraphicImageProcessing.Pointer
 			_intPointer._intPointer = ptr;
 			return ((ArrayPointerWrapper<T>)_emptyObject)._arrayPointer;
 		}
-		
 	}
 }

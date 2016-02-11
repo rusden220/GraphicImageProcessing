@@ -98,7 +98,7 @@ namespace GraphicImageProcessing.ImageProcessing
 			ObjectPointer op = new ObjectPointer(bitmapData);
 			op.IntPointer = bitmapData.Scan0.ToInt32();
 
-			var ptr = op.GetArrayPointer<byte>();
+			byte[] ptr = op.GetArrayPointer<byte>();
 			for (int i = 0; i < len; i++)
 			{
 				int value = ptr[i] + ptr[i + 1] + ptr[i + 2];
@@ -108,7 +108,6 @@ namespace GraphicImageProcessing.ImageProcessing
 				ptr[++i] = color_b;
 				i++;
 			}
-
 			result.UnlockBits(bitmapData);
 			return result;
 		}
