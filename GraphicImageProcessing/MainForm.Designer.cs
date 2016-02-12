@@ -36,9 +36,10 @@
 			this.redToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.greenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.blueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.makeBlackWhiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.makeBlackWhiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.histogramsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -73,7 +74,8 @@
 			// 
 			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.chanelToolStripMenuItem,
-            this.makeBlackWhiteToolStripMenuItem});
+            this.makeBlackWhiteToolStripMenuItem,
+            this.histogramsToolStripMenuItem});
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
 			this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
 			this.editToolStripMenuItem.Text = "Edit";
@@ -115,6 +117,13 @@
 			this.blueToolStripMenuItem.Text = "Blue";
 			this.blueToolStripMenuItem.Click += new System.EventHandler(this.ChanelToolStripMenuItem_Click);
 			// 
+			// makeBlackWhiteToolStripMenuItem
+			// 
+			this.makeBlackWhiteToolStripMenuItem.Name = "makeBlackWhiteToolStripMenuItem";
+			this.makeBlackWhiteToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+			this.makeBlackWhiteToolStripMenuItem.Text = "MakeBlackWhite";
+			this.makeBlackWhiteToolStripMenuItem.Click += new System.EventHandler(this.makeBlackWhiteToolStripMenuItem_Click);
+			// 
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -125,12 +134,12 @@
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
-			// makeBlackWhiteToolStripMenuItem
+			// histogramsToolStripMenuItem
 			// 
-			this.makeBlackWhiteToolStripMenuItem.Name = "makeBlackWhiteToolStripMenuItem";
-			this.makeBlackWhiteToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-			this.makeBlackWhiteToolStripMenuItem.Text = "MakeBlackWhite";
-			this.makeBlackWhiteToolStripMenuItem.Click += new System.EventHandler(this.makeBlackWhiteToolStripMenuItem_Click);
+			this.histogramsToolStripMenuItem.Name = "histogramsToolStripMenuItem";
+			this.histogramsToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+			this.histogramsToolStripMenuItem.Text = "Histograms";
+			this.histogramsToolStripMenuItem.Click += new System.EventHandler(this.histogramsToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -161,6 +170,7 @@
 		private System.Windows.Forms.ToolStripMenuItem greenToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem blueToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem makeBlackWhiteToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem histogramsToolStripMenuItem;
 	}
 }
 

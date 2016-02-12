@@ -18,32 +18,22 @@ namespace GraphicImageProcessing.ImageProcessing
 	}
 	public static class GraphicsProcessing
 	{
-		public static bool isRelease()
-		{
-#if DEBUG
-			return false;
-#else
-			return true;
-#endif
-
-		}
+//for performance test
+#if DEBUG		
 		public static Bitmap OptimisationEasy(Bitmap bitmap)
 		{
 			Bitmap result = new Bitmap(bitmap);
 			//get pointer via BitmapData
 			BitmapData bmpData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 			IntPtr ptr = bmpData.Scan0;
-			// Задаём массив из Byte и помещаем в него надор данных.
-			// int numBytes = bmp.Width * bmp.Height * 3; 
-			//На 3 умножаем - поскольку RGB цвет кодируется 3-мя байтами
-			//Либо используем вместо Width - Stride
+			
 			int numBytes = bmpData.Stride * bitmap.Height;
 			int widthBytes = bmpData.Stride;
 			byte[] rgbValues = new byte[numBytes];
-			// Копируем значения в массив.
+			
 			Marshal.Copy(ptr, rgbValues, 0, numBytes);
 			byte color_b = 0;
-			// Перебираем пикселы по 3 байта на каждый и меняем значения
+			
 			for (int i = 0; i < rgbValues.Length; i++)
 			{
 				int value = rgbValues[i] + rgbValues[i + 1] + rgbValues[i + 2];	
@@ -52,14 +42,11 @@ namespace GraphicImageProcessing.ImageProcessing
 				rgbValues[++i] = color_b;
 				rgbValues[++i] = color_b;
 				i++;
-			}
-			// Копируем набор данных обратно в изображение
+			}			
 			Marshal.Copy(rgbValues, 0, ptr, numBytes);
-			// Разблокируем набор данных изображения в памяти.
 			result.UnlockBits(bmpData);
 			return result;
 		}
-//#if DEBUG
 		public static Bitmap OptimisationUnsafe(Bitmap bitmap)
 		{
 			Bitmap result = new Bitmap(bitmap);
@@ -70,7 +57,7 @@ namespace GraphicImageProcessing.ImageProcessing
 
 			ObjectPointer op = new ObjectPointer(bitmapData);
 			op.IntPointer = bitmapData.Scan0.ToInt32();
-			
+
 			unsafe
 			{
 				byte* ptr = (byte*)op.IntPointer;
@@ -78,10 +65,9 @@ namespace GraphicImageProcessing.ImageProcessing
 				{
 					int value = ptr[i] + ptr[i + 1] + ptr[i + 2];
 					color_b = Convert.ToByte(value / 3);
-					ptr[i] = color_b;
-					ptr[++i] = color_b;
-					ptr[++i] = color_b;
-					i++;
+					ptr[i++] = color_b;
+					ptr[i++] = color_b;
+					ptr[i++] = color_b;
 				}
 			}
 			result.UnlockBits(bitmapData);
@@ -103,17 +89,14 @@ namespace GraphicImageProcessing.ImageProcessing
 			{
 				int value = ptr[i] + ptr[i + 1] + ptr[i + 2];
 				color_b = Convert.ToByte(value / 3);
-				ptr[i] = color_b;
-				ptr[++i] = color_b;
-				ptr[++i] = color_b;
-				i++;
+				ptr[i++] = color_b;
+				ptr[i++] = color_b;
+				ptr[i++] = color_b;
 			}
 			result.UnlockBits(bitmapData);
 			return result;
 		}
-//#endif
-
-
+#endif
 
 		/// <summary>
 		/// Make from a color image black and white 
@@ -121,25 +104,30 @@ namespace GraphicImageProcessing.ImageProcessing
 		/// <param name="bitmap"></param>
 		/// <param name="gradation"></param>
 		/// <returns></returns>
-		public static Bitmap MakeBlackWhite(Bitmap bitmap, int gradation)
+		public static Bitmap MakeBlackWhite(Bitmap bitmap)
 		{
 			Bitmap result = new Bitmap(bitmap);
-			int gray = 0;
-			Color color;
-			for (int i = 0; i < bitmap.Width; i++)
+			int len = bitmap.Width * bitmap.Height * 4;//ARGB
+			byte color_b = 0;
+			//get pointer of byte array in Bitmpa
+			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			//unsefe because it's the fastest way to update Bitmap (see TestPerformance)
+			unsafe
 			{
-				for (int j = 0; j < bitmap.Height; j++)
+				byte* ptr = (byte*)bitmapData.Scan0.ToInt32();;
+				for (int i = 0; i < len; i++)
 				{
-					color = bitmap.GetPixel(i, j);
-					gray = (color.R + color.G + color.B) / 3;
-					result.SetPixel(i,j, Color.FromArgb(gray, gray, gray));
+					color_b = (byte)((ptr[i] + ptr[i + 1] + ptr[i + 2]) / 3);
+					ptr[i++] = color_b;
+					ptr[i++] = color_b;
+					ptr[i++] = color_b;
 				}
 			}
+			result.UnlockBits(bitmapData);
 			return result;
 		}
 		/// <summary>
-		/// Make TestBitmap, 10 gray rectangles 
-		/// rgb spectrum
+		/// Make TestBitmap with rgb spectrum
 		/// </summary>
 		/// <param name="w"></param>
 		/// <param name="h"></param>
@@ -155,7 +143,7 @@ namespace GraphicImageProcessing.ImageProcessing
 			g.Clear(Color.Black);
 			int[][] arrayOfColors = new int[][] 
 			{
-				new int[]{1,1,1},
+				new int[]{1,1,1},//white
 				new int[]{1,0,0},//red
 				new int[]{0,1,0},//green
 				new int[]{0,0,1},//blue
@@ -177,7 +165,6 @@ namespace GraphicImageProcessing.ImageProcessing
 			}
 			return result;
 		}
-
 		/// <summary>
 		/// Choose channel in Bitmap
 		/// </summary>
@@ -186,22 +173,28 @@ namespace GraphicImageProcessing.ImageProcessing
 		public static Bitmap ChooseChannel(Bitmap bitmap, BitmapChanel bitmapChanel)
 		{
 			Bitmap result = new Bitmap(bitmap);
-			//int that was not unboxing in Color.FromArgb(red, green, blue);
-			int red = 0, green = 0, blue = 0;
-			Color color;
-			for (int i = 0; i < bitmap.Width; i++)
+			int len = bitmap.Width * bitmap.Height * 4;//ARGB
+			//get pointer of byte array in Bitmpa
+			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			//unsefe because it's the fastest way to update Bitmap (see TestPerformance)
+			unsafe
 			{
-				for (int j = 0; j < bitmap.Height; j++)
-				{
-					color = bitmap.GetPixel(i, j);
-					red = color.R; green = color.G; blue = color.B;
-					if ((bitmapChanel & BitmapChanel.Red) != BitmapChanel.Red) red = 0;
-					if ((bitmapChanel & BitmapChanel.Green) != BitmapChanel.Green) green = 0;
-					if ((bitmapChanel & BitmapChanel.Blue) != BitmapChanel.Blue) blue = 0;
-					result.SetPixel(i, j, Color.FromArgb(red, green, blue));
-				}
+				byte* ptr = (byte*)bitmapData.Scan0.ToInt32();
+				if ((bitmapChanel & BitmapChanel.Red) != BitmapChanel.Red)
+					for (int i = 2; i < len; i += 4) 
+						ptr[i] = 0;
+				if ((bitmapChanel & BitmapChanel.Green) != BitmapChanel.Green) 
+					for (int i = 1; i < len; i += 4) 
+						ptr[i] = 0;
+				if ((bitmapChanel & BitmapChanel.Blue) != BitmapChanel.Blue)
+					for (int i = 0; i < len; i += 4) 
+						ptr[i] = 0;				
 			}
+			result.UnlockBits(bitmapData);
+
+
 			return result;
 		}
+		
 	}
 }

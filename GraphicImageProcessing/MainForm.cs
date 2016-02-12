@@ -13,6 +13,8 @@ namespace GraphicImageProcessing
 		private Bitmap _originalBitmap;
 		private int _mainBitmapPointX;
 		private int _mainBitmapPointY;
+		//Gray Gradation window
+		private GrayGradation _grayGradation;
 		//future
 		private Thread _workingThread;
 
@@ -23,6 +25,10 @@ namespace GraphicImageProcessing
 			_mainBitmapPointY = menuStrip1.Height;
 			_originalBitmap = GraphicsProcessing.GetTestBitmap(400, 200);
 			_mainBitmap = new Bitmap(_originalBitmap);
+		}
+		public Bitmap MainBitmap
+		{
+			get { return _mainBitmap; }
 		}
 		/// <summary>
 		/// ReDrawFunction
@@ -42,8 +48,10 @@ namespace GraphicImageProcessing
 				Filter = "Image Files(*.bmp;*.jpg;*.png)|*.bmp;*.jpg;*.png"
 			};			
 			if (ofd.ShowDialog() == DialogResult.OK)
-			{
-				_mainBitmap = new Bitmap(ofd.FileName);
+			{	
+				_mainBitmap = new Bitmap(this.ClientRectangle.Width, this.ClientRectangle.Height);	
+				Graphics.FromImage(_mainBitmap).DrawImage(new Bitmap(ofd.FileName), 0, 0, _mainBitmap.Width, _mainBitmap.Height);
+				_originalBitmap = new Bitmap(_mainBitmap);
 				this.Invalidate();
 			}
 		}
@@ -52,7 +60,7 @@ namespace GraphicImageProcessing
 		{
 			var tsm = (ToolStripMenuItem)sender;
 			//invert check/uncheck
- 			tsm.Checked = tsm.Checked ? false : true;
+ 			tsm.Checked = !tsm.Checked;
 
 			BitmapChanel bc = BitmapChanel.None;
 			if (redToolStripMenuItem.Checked) bc = bc | BitmapChanel.Red;
@@ -67,10 +75,14 @@ namespace GraphicImageProcessing
 
 		private void makeBlackWhiteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			//_mainBitmap = GraphicsProcessing.MakeBlackWhite(_originalBitmap, 255);
-			_mainBitmap = GraphicsProcessing.OptimisationPointer(_originalBitmap);
-
+			_mainBitmap = GraphicsProcessing.MakeBlackWhite(_originalBitmap);
 			this.Invalidate();
+		}
+
+		private void histogramsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			_grayGradation = new GrayGradation();
+			_grayGradation.Show(this);
 		}		
 
 	}
