@@ -97,7 +97,17 @@ namespace GraphicImageProcessing.ImageProcessing
 			return result;
 		}
 #endif
+		/// <summary>
+		/// make Gaussian Bluer
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <returns></returns>
+		private static Bitmap GaussianBluer(Bitmap bitmap)
+		{
+			Bitmap result = new Bitmap(bitmap);
 
+			return result;
+		}
 		/// <summary>
 		/// Make from a color image black and white 
 		/// </summary>

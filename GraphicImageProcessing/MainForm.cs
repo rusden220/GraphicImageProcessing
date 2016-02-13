@@ -83,6 +83,13 @@ namespace GraphicImageProcessing
 		{
 			_grayGradation = new GrayGradation();
 			_grayGradation.Show(this);
+		}
+
+		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog sfd = new SaveFileDialog();
+			sfd.ShowDialog();
+			_mainBitmap.Save(sfd.FileName);
 		}		
 
 	}

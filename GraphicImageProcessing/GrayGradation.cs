@@ -26,17 +26,17 @@ namespace GraphicImageProcessing
 			chart1.Series[PLOTGREEN].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 			chart1.Series[PLOTGREEN].Color = Color.Green;
 			chart1.Series[PLOTBLUE].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-			chart1.Series[PLOTBLUE].Color = Color.Blue;  
+			chart1.Series[PLOTBLUE].Color = Color.Blue;
 		}
 		protected override void OnLoad(EventArgs e)
 		{
 			_mainForm = (MainForm)this.Owner;
-			UpdateGraphic();			
+			UpdateGraphic();
 			base.OnLoad(e);
 		}
 		public void UpdateGraphic()
 		{
-			Bitmap bm =  new Bitmap(_mainForm.MainBitmap);
+			Bitmap bm = new Bitmap(_mainForm.MainBitmap);
 			BitmapData bitmapData = bm.LockBits(new Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
 			int len = bm.Width * bm.Height * 4;
@@ -96,12 +96,9 @@ namespace GraphicImageProcessing
 				byte* array = (byte*)ptr;
 				for (int i = 0; i < len; i++)//take just blue
 				{
-					array[i] = (byte)(tempB * (array[i] - arrExtr[1]));
-					i++;
-					array[i] = (byte)(tempG * (array[i] - arrExtr[3]));
-					i++;
-					array[i] = (byte)(tempR * (array[i] - arrExtr[5]));
-					i++;
+					array[i] = (byte)(tempB * (array[i] - arrExtr[1])); i++;
+					array[i] = (byte)(tempG * (array[i] - arrExtr[3])); i++;
+					array[i] = (byte)(tempR * (array[i] - arrExtr[5])); i++;
 				}
 			}
 		}
@@ -117,7 +114,7 @@ namespace GraphicImageProcessing
 					arrayR[array[i++]]++;
 				}
 			}
-		}		
+		}
 
 		private void shiftToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -125,6 +122,6 @@ namespace GraphicImageProcessing
 			UpdateGraphic();
 		}
 
-		
+
 	}
 }
