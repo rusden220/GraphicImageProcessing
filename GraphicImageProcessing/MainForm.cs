@@ -11,10 +11,13 @@ namespace GraphicImageProcessing
 	{
 		private Bitmap _mainBitmap;
 		private Bitmap _originalBitmap;
+
 		private int _mainBitmapPointX;
 		private int _mainBitmapPointY;
 		//Gray Gradation window
 		private GrayGradation _grayGradation;
+		//Brightness and contrast window
+		private BrightnessAndContrast _brightnessAndContrast;
 		//future
 		private Thread _workingThread;
 
@@ -23,12 +26,16 @@ namespace GraphicImageProcessing
 			InitializeComponent();
 			_mainBitmapPointX = 0;
 			_mainBitmapPointY = menuStrip1.Height;
-			_originalBitmap = GraphicsProcessing.GetTestBitmap(400, 200);
+			_originalBitmap = GraphicsProcessing.GetTestBitmap(400, 200);			
 			_mainBitmap = new Bitmap(_originalBitmap);
 		}
 		public Bitmap MainBitmap
 		{
 			get { return _mainBitmap; }
+		}
+		public Bitmap OriginalBitmap
+		{
+			get { return _originalBitmap; }
 		}
 		/// <summary>
 		/// ReDrawFunction
@@ -90,6 +97,20 @@ namespace GraphicImageProcessing
 			SaveFileDialog sfd = new SaveFileDialog();
 			sfd.ShowDialog();
 			_mainBitmap.Save(sfd.FileName);
+		}
+
+		private void brightnessAndContrastToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			_brightnessAndContrast = new BrightnessAndContrast();
+			//should be 
+			_brightnessAndContrast.BitmapChanged += _brightnessAndContrast_BitmapChanged;
+			_brightnessAndContrast.Show(this);
+		}
+		private void _brightnessAndContrast_BitmapChanged(object sender, Bitmap e)
+		{
+			_mainBitmap = e;
+			this.Invalidate();
+			//throw new NotImplementedException();
 		}		
 
 	}

@@ -98,6 +98,39 @@ namespace GraphicImageProcessing.ImageProcessing
 		}
 #endif
 		/// <summary>
+		/// Up and down Brightness
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <returns></returns>
+		public static Bitmap Brightness(Bitmap bitmap, int value)
+		{
+			Bitmap result = new Bitmap(bitmap);
+			int len = bitmap.Width * bitmap.Height * 4;//ARGB
+			byte color_b = 0;
+			//get pointer of byte array in Bitmpa
+			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			
+			Func<int, byte> intToByte = (int num) =>
+			{
+				if (num > 255) num = 255;
+				else if (num < 0) num = 0;
+				return (byte)num;
+			};
+			unsafe
+			{
+				byte* ptr = (byte*)bitmapData.Scan0.ToInt32();
+				for (int i = 0; i < len; i++)
+				{
+					ptr[i] = intToByte(ptr[i] + value); i++;
+					ptr[i] = intToByte(ptr[i] + value); i++;
+					ptr[i] = intToByte(ptr[i] + value); i++;
+				}
+			}
+			result.UnlockBits(bitmapData);
+			return result;
+		}
+
+		/// <summary>
 		/// make Gaussian Bluer
 		/// </summary>
 		/// <param name="bitmap"></param>

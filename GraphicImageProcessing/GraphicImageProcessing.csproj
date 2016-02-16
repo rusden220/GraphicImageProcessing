@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrightnessAndContrast.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BrightnessAndContrast.Designer.cs">
+      <DependentUpon>BrightnessAndContrast.cs</DependentUpon>
+    </Compile>
     <Compile Include="GrayGradation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +70,9 @@
     <Compile Include="Pointer\ObjectPointer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BrightnessAndContrast.resx">
+      <DependentUpon>BrightnessAndContrast.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GrayGradation.resx">
       <DependentUpon>GrayGradation.cs</DependentUpon>
     </EmbeddedResource>
