@@ -18,85 +18,6 @@ namespace GraphicImageProcessing.ImageProcessing
 	}
 	public static class GraphicsProcessing
 	{
-//for performance test
-#if DEBUG		
-		public static Bitmap OptimisationEasy(Bitmap bitmap)
-		{
-			Bitmap result = new Bitmap(bitmap);
-			//get pointer via BitmapData
-			BitmapData bmpData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-			IntPtr ptr = bmpData.Scan0;
-			
-			int numBytes = bmpData.Stride * bitmap.Height;
-			int widthBytes = bmpData.Stride;
-			byte[] rgbValues = new byte[numBytes];
-			
-			Marshal.Copy(ptr, rgbValues, 0, numBytes);
-			byte color_b = 0;
-			
-			for (int i = 0; i < rgbValues.Length; i++)
-			{
-				int value = rgbValues[i] + rgbValues[i + 1] + rgbValues[i + 2];	
-				color_b = Convert.ToByte(value / 3);
-				rgbValues[i] = color_b;
-				rgbValues[++i] = color_b;
-				rgbValues[++i] = color_b;
-				i++;
-			}			
-			Marshal.Copy(rgbValues, 0, ptr, numBytes);
-			result.UnlockBits(bmpData);
-			return result;
-		}
-		public static Bitmap OptimisationUnsafe(Bitmap bitmap)
-		{
-			Bitmap result = new Bitmap(bitmap);
-			int len = bitmap.Width * bitmap.Height * 4;//ARGB
-			byte color_b = 0;
-
-			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-			ObjectPointer op = new ObjectPointer(bitmapData);
-			op.IntPointer = bitmapData.Scan0.ToInt32();
-
-			unsafe
-			{
-				byte* ptr = (byte*)op.IntPointer;
-				for (int i = 0; i < len; i++)
-				{
-					int value = ptr[i] + ptr[i + 1] + ptr[i + 2];
-					color_b = Convert.ToByte(value / 3);
-					ptr[i++] = color_b;
-					ptr[i++] = color_b;
-					ptr[i++] = color_b;
-				}
-			}
-			result.UnlockBits(bitmapData);
-			return result;
-		}
-		public static Bitmap OptimisationPointer(Bitmap bitmap)
-		{
-			Bitmap result = new Bitmap(bitmap);
-			int len = bitmap.Width * bitmap.Height * 4;//ARGB
-			byte color_b = 0;
-
-			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-			ObjectPointer op = new ObjectPointer(bitmapData);
-			op.IntPointer = bitmapData.Scan0.ToInt32();
-
-			byte[] ptr = op.GetArrayPointer<byte>();
-			for (int i = 0; i < len; i++)
-			{
-				int value = ptr[i] + ptr[i + 1] + ptr[i + 2];
-				color_b = Convert.ToByte(value / 3);
-				ptr[i++] = color_b;
-				ptr[i++] = color_b;
-				ptr[i++] = color_b;
-			}
-			result.UnlockBits(bitmapData);
-			return result;
-		}
-#endif
 		/// <summary>
 		/// Up and down Brightness
 		/// </summary>
@@ -106,7 +27,6 @@ namespace GraphicImageProcessing.ImageProcessing
 		{
 			Bitmap result = new Bitmap(bitmap);
 			int len = bitmap.Width * bitmap.Height * 4;//ARGB
-			byte color_b = 0;
 			//get pointer of byte array in Bitmpa
 			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 			
@@ -131,6 +51,33 @@ namespace GraphicImageProcessing.ImageProcessing
 		}
 
 		/// <summary>
+		/// Convert RGB palette to HSV
+		/// </summary>
+		/// <param name="R"></param>
+		/// <param name="G"></param>
+		/// <param name="B"></param>
+		/// <returns></returns>
+		public static int[] ConverRGBToHSV(byte r, byte g, byte b)
+		{
+			double R = r / 255D , G = g / 255D, B = b / 255D;
+			double h = 0, s = 0, v = 0;
+			double max = Math.Max(Math.Max(R,G),B);
+			double min = Math.Min(Math.Min(R,G),B);
+			v = max;
+			s = max == 0 ? 0 : (int)(1 - ((double)min) / max);
+			//h
+			if (max == min) h = 0;
+			else if (max == R && G >= B) h = (int)(60 * (G - B) / (double)(max - min));
+			else if (max == R && G < B) h = (int)(60 * (G - B) / ((double)(max - min)) + 360);
+			else if (max == G) h = (int)(60 * (B - R) / ((double)(max - min)) + 120);
+			else if (max == B) h = (int)(60 * (R - G) / ((double)(max - min)) + 240);
+			return new int[] { (int)h, (int)s * 100, (int)v * 100 };
+		}
+		public static int[] ConverRGBToHSV(Color color)
+		{
+			return ConverRGBToHSV(color.R, color.G, color.B);
+		}
+		/// <summary>
 		/// make Gaussian Bluer
 		/// </summary>
 		/// <param name="bitmap"></param>
@@ -138,7 +85,6 @@ namespace GraphicImageProcessing.ImageProcessing
 		private static Bitmap GaussianBluer(Bitmap bitmap)
 		{
 			Bitmap result = new Bitmap(bitmap);
-
 			return result;
 		}
 		/// <summary>

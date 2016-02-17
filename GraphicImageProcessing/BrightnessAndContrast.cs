@@ -73,8 +73,7 @@ namespace GraphicImageProcessing
 				((TextBox)temp.Tag).Text = temp.Value.ToString();
 				UpdateBitmap(temp.Value);
 			}
-			_isTextChanged = false;		
-
+			_isTextChanged = false;
 			//throw new NotImplementedException();
 		}
 		protected override void OnLoad(EventArgs e)

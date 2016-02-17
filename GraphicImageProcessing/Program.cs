@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GraphicImageProcessing.Pointer;
+using GraphicImageProcessing.ImageProcessing;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace GraphicImageProcessing
 {
@@ -17,10 +18,11 @@ namespace GraphicImageProcessing
 		/// </summary>
 		[STAThread]
 		static void Main()
-		{			
+		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new MainForm());
+
 		}
 	}
 }

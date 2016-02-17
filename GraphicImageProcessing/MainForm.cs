@@ -14,16 +14,19 @@ namespace GraphicImageProcessing
 
 		private int _mainBitmapPointX;
 		private int _mainBitmapPointY;
+
 		//Gray Gradation window
 		private GrayGradation _grayGradation;
 		//Brightness and contrast window
 		private BrightnessAndContrast _brightnessAndContrast;
+
 		//future
 		private Thread _workingThread;
 
 		public MainForm()
 		{			
 			InitializeComponent();
+			this.DoubleBuffered = true;
 			_mainBitmapPointX = 0;
 			_mainBitmapPointY = menuStrip1.Height;
 			_originalBitmap = GraphicsProcessing.GetTestBitmap(400, 200);			
@@ -37,6 +40,7 @@ namespace GraphicImageProcessing
 		{
 			get { return _originalBitmap; }
 		}
+
 		/// <summary>
 		/// ReDrawFunction
 		/// </summary>
@@ -44,7 +48,7 @@ namespace GraphicImageProcessing
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.DrawImage(_mainBitmap, _mainBitmapPointX, _mainBitmapPointY);
-			base.OnPaint(e);
+			//base.OnPaint(e);
 		}
 		
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
