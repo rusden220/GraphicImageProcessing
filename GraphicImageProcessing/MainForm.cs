@@ -59,9 +59,14 @@ namespace GraphicImageProcessing
 				Filter = "Image Files(*.bmp;*.jpg;*.png)|*.bmp;*.jpg;*.png"
 			};			
 			if (ofd.ShowDialog() == DialogResult.OK)
-			{	
-				_mainBitmap = new Bitmap(this.ClientRectangle.Width, this.ClientRectangle.Height);	
+			{
+				//var bm = new Bitmap(ofd.FileName);
+				//_mainBitmap = new Bitmap(bm.Width, bm.Height);
+				//Graphics.FromImage(_mainBitmap).DrawImage(bm, 0, 0, _mainBitmap.Width, _mainBitmap.Height);
+
+				_mainBitmap = new Bitmap(this.ClientRectangle.Width, this.ClientRectangle.Height);
 				Graphics.FromImage(_mainBitmap).DrawImage(new Bitmap(ofd.FileName), 0, 0, _mainBitmap.Width, _mainBitmap.Height);
+				
 				_originalBitmap = new Bitmap(_mainBitmap);
 				this.Invalidate();
 			}

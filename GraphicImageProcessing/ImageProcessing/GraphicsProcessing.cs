@@ -49,6 +49,51 @@ namespace GraphicImageProcessing.ImageProcessing
 			result.UnlockBits(bitmapData);
 			return result;
 		}
+		/// <summary>
+		/// Up and down Contrast
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static Bitmap Contrast(Bitmap bitmap, int value)
+		{		
+			Bitmap result = new Bitmap(bitmap);
+			int len = bitmap.Width * bitmap.Height * 4;//ARGB
+			//get pointer of byte array in Bitmpa
+			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			Func<double, byte> doubleToByte = (double num) =>
+			{
+				if (num > 255) num = 255;
+				else if (num < 0) num = 0;
+				return (byte)num;
+			};
+			unsafe
+			{
+				byte* ptr = (byte*)bitmapData.Scan0.ToInt32();
+				if (value > 0)
+				{
+					for (int i = 0; i < len; i++)
+					{
+						ptr[i] = doubleToByte((ptr[i] * 100 - 128 * value) / (100D - value)); i++;
+						ptr[i] = doubleToByte((ptr[i] * 100 - 128 * value) / (100D - value)); i++;
+						ptr[i] = doubleToByte((ptr[i] * 100 - 128 * value) / (100D - value)); i++;
+					}
+				}
+				else
+				{
+					value *= -1;
+					for (int i = 0; i < len; i++)
+					{
+						ptr[i] = doubleToByte((ptr[i] * (100 - value) + 128 * value) / 100D); i++;
+						ptr[i] = doubleToByte((ptr[i] * (100 - value) + 128 * value) / 100D); i++;
+						ptr[i] = doubleToByte((ptr[i] * (100 - value) + 128 * value) / 100D); i++;
+					}
+				}
+				
+			}
+			result.UnlockBits(bitmapData);
+			return result;
+		}
 
 		/// <summary>
 		/// Convert RGB palette to HSV

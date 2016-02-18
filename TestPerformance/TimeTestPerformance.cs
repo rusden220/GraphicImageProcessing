@@ -63,7 +63,7 @@ namespace TestPerformance
 			}
 			Console.WriteLine();
 			return avgTime;
-		}
+		
 		}
 		public double Start(Func<Bitmap, Bitmap> action, int imageSize)
 		{
