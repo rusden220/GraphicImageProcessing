@@ -1,6 +1,6 @@
 ﻿namespace GraphicImageProcessing
 {
-	partial class GrayGradation
+	partial class ColorHistogram
 	{
 		/// <summary>
 		/// Required designer variable.

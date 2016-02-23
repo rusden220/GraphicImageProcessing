@@ -39,9 +39,10 @@
 			this.blueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.makeBlackWhiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.histogramsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.brightnessAndContrastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.brightnessAndContrastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.applyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -86,7 +87,8 @@
             this.chanelToolStripMenuItem,
             this.makeBlackWhiteToolStripMenuItem,
             this.histogramsToolStripMenuItem,
-            this.brightnessAndContrastToolStripMenuItem});
+            this.brightnessAndContrastToolStripMenuItem,
+            this.applyToolStripMenuItem});
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
 			this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
 			this.editToolStripMenuItem.Text = "Edit";
@@ -142,6 +144,13 @@
 			this.histogramsToolStripMenuItem.Text = "Histograms";
 			this.histogramsToolStripMenuItem.Click += new System.EventHandler(this.histogramsToolStripMenuItem_Click);
 			// 
+			// brightnessAndContrastToolStripMenuItem
+			// 
+			this.brightnessAndContrastToolStripMenuItem.Name = "brightnessAndContrastToolStripMenuItem";
+			this.brightnessAndContrastToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+			this.brightnessAndContrastToolStripMenuItem.Text = "Brightness and Contrast ";
+			this.brightnessAndContrastToolStripMenuItem.Click += new System.EventHandler(this.brightnessAndContrastToolStripMenuItem_Click);
+			// 
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -152,12 +161,12 @@
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
-			// brightnessAndContrastToolStripMenuItem
+			// applyToolStripMenuItem
 			// 
-			this.brightnessAndContrastToolStripMenuItem.Name = "brightnessAndContrastToolStripMenuItem";
-			this.brightnessAndContrastToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
-			this.brightnessAndContrastToolStripMenuItem.Text = "Brightness and Contrast ";
-			this.brightnessAndContrastToolStripMenuItem.Click += new System.EventHandler(this.brightnessAndContrastToolStripMenuItem_Click);
+			this.applyToolStripMenuItem.Name = "applyToolStripMenuItem";
+			this.applyToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+			this.applyToolStripMenuItem.Text = "Apply";
+			this.applyToolStripMenuItem.Click += new System.EventHandler(this.applyToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -191,6 +200,7 @@
 		private System.Windows.Forms.ToolStripMenuItem histogramsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem brightnessAndContrastToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem applyToolStripMenuItem;
 	}
 }
 

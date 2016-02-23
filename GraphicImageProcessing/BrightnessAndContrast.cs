@@ -11,12 +11,6 @@ using GraphicImageProcessing.ImageProcessing;
 
 namespace GraphicImageProcessing
 {
-	public class BitmapChanchFunctionData
-	{
-		public Func<Bitmap,int, Bitmap> BitmapChangeFunction { get; set; }
-		public object Control { get; set; }
-
-	}
 	public partial class BrightnessAndContrast : Form
 	{
 		private MainForm _mainForm;
@@ -44,7 +38,6 @@ namespace GraphicImageProcessing
 
 			trackBarBrightness.Tag = new BitmapChanchFunctionData() { BitmapChangeFunction = GraphicsProcessing.Brightness, Control = textBoxBrightness };
 			trackBarContrast.Tag = new BitmapChanchFunctionData() { BitmapChangeFunction = GraphicsProcessing.Contrast, Control = textBoxContrast };
-
 
 			textBoxBrightness.TextChanged += textBox_TextChanged;
 			textBoxContrast.TextChanged += textBox_TextChanged;
@@ -85,6 +78,22 @@ namespace GraphicImageProcessing
 			_mainForm = (MainForm)this.Owner;
 			base.OnLoad(e);
 		}
+
+		private void autoContrastToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			BitmapChanged(this, GraphicsProcessing.AutoContrast(_mainForm.OriginalBitmap));
+		}
+
+		private void applyToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			_mainForm.ApplyChanges();
+		}
+	}
+	public class BitmapChanchFunctionData
+	{
+		public Func<Bitmap, int, Bitmap> BitmapChangeFunction { get; set; }
+		public object Control { get; set; }
+
 	}
 
 }

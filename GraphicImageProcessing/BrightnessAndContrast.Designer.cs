@@ -31,12 +31,15 @@
 			this.trackBarBrightness = new System.Windows.Forms.TrackBar();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.autoContrastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.labelBrightness = new System.Windows.Forms.Label();
 			this.trackBarContrast = new System.Windows.Forms.TrackBar();
 			this.labelContrast = new System.Windows.Forms.Label();
 			this.textBoxBrightness = new System.Windows.Forms.TextBox();
 			this.textBoxContrast = new System.Windows.Forms.TextBox();
+			this.applyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarContrast)).BeginInit();
@@ -55,6 +58,7 @@
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.editToolStripMenuItem,
             this.aboutToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -67,6 +71,22 @@
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
+			// 
+			// editToolStripMenuItem
+			// 
+			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autoContrastToolStripMenuItem,
+            this.applyToolStripMenuItem});
+			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+			this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+			this.editToolStripMenuItem.Text = "Edit";
+			// 
+			// autoContrastToolStripMenuItem
+			// 
+			this.autoContrastToolStripMenuItem.Name = "autoContrastToolStripMenuItem";
+			this.autoContrastToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.autoContrastToolStripMenuItem.Text = "AutoContrast";
+			this.autoContrastToolStripMenuItem.Click += new System.EventHandler(this.autoContrastToolStripMenuItem_Click);
 			// 
 			// aboutToolStripMenuItem
 			// 
@@ -115,6 +135,13 @@
 			this.textBoxContrast.Size = new System.Drawing.Size(45, 20);
 			this.textBoxContrast.TabIndex = 6;
 			// 
+			// applyToolStripMenuItem
+			// 
+			this.applyToolStripMenuItem.Name = "applyToolStripMenuItem";
+			this.applyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.applyToolStripMenuItem.Text = "Apply";
+			this.applyToolStripMenuItem.Click += new System.EventHandler(this.applyToolStripMenuItem_Click);
+			// 
 			// BrightnessAndContrast
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -150,5 +177,8 @@
 		private System.Windows.Forms.Label labelContrast;
 		private System.Windows.Forms.TextBox textBoxBrightness;
 		private System.Windows.Forms.TextBox textBoxContrast;
+		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem autoContrastToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem applyToolStripMenuItem;
 	}
 }

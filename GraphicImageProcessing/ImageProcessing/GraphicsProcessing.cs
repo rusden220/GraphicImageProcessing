@@ -94,6 +94,62 @@ namespace GraphicImageProcessing.ImageProcessing
 			result.UnlockBits(bitmapData);
 			return result;
 		}
+		/// <summary>
+		/// contrast normalization
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <returns></returns>
+		public static Bitmap AutoContrast(Bitmap bitmap)
+		{
+			Bitmap result = new Bitmap(bitmap);
+			int len = bitmap.Width * bitmap.Height * 4;//ARGB
+			//get pointer of byte array in Bitmpa
+			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			Func<double, byte> doubleToByte = (double num) =>
+			{
+				if (num > 255) num = 255;
+				else if (num < 0) num = 0;
+				return (byte)num;
+			};
+			double[] arrayCountR = new double[byte.MaxValue + 1];
+			double[] arrayCountG = new double[byte.MaxValue + 1];
+			double[] arrayCountB = new double[byte.MaxValue + 1];
+			double temp = len / 4;
+
+
+			double[] arrayPtr = new double[len];
+			unsafe
+			{
+				byte* ptr = (byte*)bitmapData.Scan0.ToInt32();
+				for (int i = 0; i < len; i++)
+				{
+					arrayCountB[ptr[i++]]++;
+					arrayCountG[ptr[i++]]++;
+					arrayCountR[ptr[i++]]++;
+				}
+				for (int i = 0; i < arrayCountB.Length; i++)
+				{
+					arrayCountB[i] = arrayCountB[i] / temp;
+					arrayCountG[i] = arrayCountG[i] / temp;
+					arrayCountR[i] = arrayCountR[i] / temp;
+				}
+				for (int i = 1; i < arrayCountB.Length; i++)
+				{
+					arrayCountB[i] = arrayCountB[i - 1] + arrayCountB[i];
+					arrayCountG[i] = arrayCountG[i - 1] + arrayCountG[i];
+					arrayCountR[i] = arrayCountR[i - 1] + arrayCountR[i];
+				}       
+				for (int i = 0; i < len; i++)
+				{
+					ptr[i] = doubleToByte(byte.MaxValue * arrayCountB[ptr[i]]); i++;
+					ptr[i] = doubleToByte(byte.MaxValue * arrayCountG[ptr[i]]); i++;
+					ptr[i] = doubleToByte(byte.MaxValue * arrayCountR[ptr[i]]); i++;
+				}
+			}
+
+			result.UnlockBits(bitmapData);
+			return result;
+		}
 
 		/// <summary>
 		/// Convert RGB palette to HSV

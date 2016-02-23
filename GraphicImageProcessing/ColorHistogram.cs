@@ -5,14 +5,14 @@ using System.Windows.Forms;
 
 namespace GraphicImageProcessing
 {
-	public partial class GrayGradation : Form
+	public partial class ColorHistogram : Form
 	{
 		private const string PLOTRED = "red";
 		private const string PLOTGREEN = "green";
 		private const string PLOTBLUE = "blue";
 
 		private MainForm _mainForm;
-		public GrayGradation()
+		public ColorHistogram()
 		{
 			InitializeComponent();
 			chart1.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
@@ -68,6 +68,12 @@ namespace GraphicImageProcessing
 		}
 		private void GetMaxMinFromBitmapArray(int ptr, int len, ref byte[] arrExtr)
 		{
+			arrExtr = new byte[] 
+				{ //max min
+					0,  255, //b
+					0,  255, //g
+					0,  255  //r
+				};
 			unsafe
 			{
 				byte* array = (byte*)ptr;
@@ -94,7 +100,7 @@ namespace GraphicImageProcessing
 			unsafe
 			{
 				byte* array = (byte*)ptr;
-				for (int i = 0; i < len; i++)//take just blue
+				for (int i = 0; i < len; i++)
 				{
 					array[i] = (byte)(tempB * (array[i] - arrExtr[1])); i++;
 					array[i] = (byte)(tempG * (array[i] - arrExtr[3])); i++;
@@ -121,7 +127,5 @@ namespace GraphicImageProcessing
 			((ToolStripMenuItem)sender).Checked = !((ToolStripMenuItem)sender).Checked;
 			UpdateGraphic();
 		}
-
-
 	}
 }

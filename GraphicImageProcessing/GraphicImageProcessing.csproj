@@ -54,11 +54,11 @@
     <Compile Include="BrightnessAndContrast.Designer.cs">
       <DependentUpon>BrightnessAndContrast.cs</DependentUpon>
     </Compile>
-    <Compile Include="GrayGradation.cs">
+    <Compile Include="ColorHistogram.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GrayGradation.Designer.cs">
-      <DependentUpon>GrayGradation.cs</DependentUpon>
+    <Compile Include="ColorHistogram.Designer.cs">
+      <DependentUpon>ColorHistogram.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -73,8 +73,8 @@
     <EmbeddedResource Include="BrightnessAndContrast.resx">
       <DependentUpon>BrightnessAndContrast.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GrayGradation.resx">
-      <DependentUpon>GrayGradation.cs</DependentUpon>
+    <EmbeddedResource Include="ColorHistogram.resx">
+      <DependentUpon>ColorHistogram.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
