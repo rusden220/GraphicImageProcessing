@@ -16,7 +16,7 @@ namespace GraphicImageProcessing
 		private int _mainBitmapPointY;
 
 		//Gray Gradation window
-		private ColorHistogram _grayGradation;
+		private ColorHistogram _colorHistogram;
 		//Brightness and contrast window
 		private BrightnessAndContrast _brightnessAndContrast;
 
@@ -97,8 +97,8 @@ namespace GraphicImageProcessing
 
 		private void histogramsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			_grayGradation = new ColorHistogram();
-			_grayGradation.Show(this);
+			_colorHistogram = new ColorHistogram();
+			_colorHistogram.Show(this);
 		}
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)

@@ -19,9 +19,18 @@ namespace GraphicImageProcessing
 		[STAThread]
 		static void Main()
 		{
-			Application.EnableVisualStyles(); 
+			Action[] arr = new Action[]{todo1, todo2};
+			var str = arr[0].Method.Name;
+			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new MainForm());
+		}
+		private static void todo1()
+		{
+
+		}
+		private static void todo2()
+		{
 
 		}
 	}

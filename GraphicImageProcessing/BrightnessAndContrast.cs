@@ -33,11 +33,11 @@ namespace GraphicImageProcessing
 			trackBarBrightness.Scroll += trackBar_Scroll;
 			trackBarContrast.Scroll += trackBar_Scroll;
 
-			textBoxBrightness.Tag = new BitmapChanchFunctionData() { BitmapChangeFunction = GraphicsProcessing.Brightness, Control = trackBarBrightness };
-			textBoxContrast.Tag = new BitmapChanchFunctionData() { BitmapChangeFunction = GraphicsProcessing.Contrast, Control = trackBarContrast };
+			textBoxBrightness.Tag = new BitmapChangeFunctionData() { BitmapChangeFunction = GraphicsProcessing.Brightness, Control = trackBarBrightness };
+			textBoxContrast.Tag = new BitmapChangeFunctionData() { BitmapChangeFunction = GraphicsProcessing.Contrast, Control = trackBarContrast };
 
-			trackBarBrightness.Tag = new BitmapChanchFunctionData() { BitmapChangeFunction = GraphicsProcessing.Brightness, Control = textBoxBrightness };
-			trackBarContrast.Tag = new BitmapChanchFunctionData() { BitmapChangeFunction = GraphicsProcessing.Contrast, Control = textBoxContrast };
+			trackBarBrightness.Tag = new BitmapChangeFunctionData() { BitmapChangeFunction = GraphicsProcessing.Brightness, Control = textBoxBrightness };
+			trackBarContrast.Tag = new BitmapChangeFunctionData() { BitmapChangeFunction = GraphicsProcessing.Contrast, Control = textBoxContrast };
 
 			textBoxBrightness.TextChanged += textBox_TextChanged;
 			textBoxContrast.TextChanged += textBox_TextChanged;
@@ -51,14 +51,14 @@ namespace GraphicImageProcessing
 				var temp = ((TextBox)sender);
 				if (int.TryParse(temp.Text, out value))
 				{
-					((TrackBar)(((BitmapChanchFunctionData)(temp.Tag)).Control)).Value = value;
-					UpdateBitmap((BitmapChanchFunctionData)(temp.Tag), value);
+					((TrackBar)(((BitmapChangeFunctionData)(temp.Tag)).Control)).Value = value;
+					UpdateBitmap((BitmapChangeFunctionData)(temp.Tag), value);
 				}
 				_isTextChanged = true;
 			}
 			_isScroll = false;
 		}
-		private void UpdateBitmap(BitmapChanchFunctionData control, int value)
+		private void UpdateBitmap(BitmapChangeFunctionData control, int value)
 		{
 			BitmapChanged(this, control.BitmapChangeFunction(_mainForm.OriginalBitmap, value));
 		}
@@ -68,8 +68,8 @@ namespace GraphicImageProcessing
 			var temp = ((TrackBar)sender);
 			if (!_isTextChanged)
 			{
-				((TextBox)(((BitmapChanchFunctionData)(temp.Tag)).Control)).Text = temp.Value.ToString();
-				UpdateBitmap((BitmapChanchFunctionData)(temp.Tag), temp.Value);
+				((TextBox)(((BitmapChangeFunctionData)(temp.Tag)).Control)).Text = temp.Value.ToString();
+				UpdateBitmap((BitmapChangeFunctionData)(temp.Tag), temp.Value);
 			}
 			_isTextChanged = false;
 		}
@@ -89,7 +89,7 @@ namespace GraphicImageProcessing
 			_mainForm.ApplyChanges();
 		}
 	}
-	public class BitmapChanchFunctionData
+	public class BitmapChangeFunctionData
 	{
 		public Func<Bitmap, int, Bitmap> BitmapChangeFunction { get; set; }
 		public object Control { get; set; }

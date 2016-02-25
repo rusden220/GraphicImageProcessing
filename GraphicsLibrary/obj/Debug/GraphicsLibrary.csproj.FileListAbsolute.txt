@@ -1,0 +1,5 @@
+D:\Den\Programming\C#\BelyhImage\GraphicImageProcessing\GraphicsLibrary\obj\Debug\GraphicsLibrary.csprojResolveAssemblyReference.cache
+D:\Den\Programming\C#\BelyhImage\GraphicImageProcessing\GraphicsLibrary\bin\Debug\GraphicsLibrary.dll
+D:\Den\Programming\C#\BelyhImage\GraphicImageProcessing\GraphicsLibrary\bin\Debug\GraphicsLibrary.pdb
+D:\Den\Programming\C#\BelyhImage\GraphicImageProcessing\GraphicsLibrary\obj\Debug\GraphicsLibrary.dll
+D:\Den\Programming\C#\BelyhImage\GraphicImageProcessing\GraphicsLibrary\obj\Debug\GraphicsLibrary.pdb
