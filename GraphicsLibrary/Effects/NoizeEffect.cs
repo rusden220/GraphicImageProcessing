@@ -8,10 +8,10 @@ namespace ImageProcessing.Effects
 		private Random _random;
 		public NoizeEffect()
 		{
-			EffectsDelegat = MakeNoise;
+			//EffectsDelegat = MakeNoise;
 			_random = new Random();
 		}
-		private void MakeNoise(int pointer, int index)
+		protected override void Effect(int pointer, int index)
 		{
 			unsafe
 			{

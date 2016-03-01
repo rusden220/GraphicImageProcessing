@@ -18,8 +18,8 @@ namespace ImageProcessing.EffectsBase
 			public CountdownEvent CountdownEvent { get; set; }
 		}
 
-		public delegate void ApplayEffectsDelegat(int ptr, int index);
-		protected ApplayEffectsDelegat _effectsDelegat;
+		//public delegate void ApplayEffectsDelegat(int ptr, int index);
+		//protected ApplayEffectsDelegat _effectsDelegat;
 		protected GraphicsEffectsData _graphicsEffectsData;
 		private bool _isParallel;
 
@@ -54,11 +54,12 @@ namespace ImageProcessing.EffectsBase
 			}
 
 		}
-		public ApplayEffectsDelegat EffectsDelegat
-		{
-			get { return _effectsDelegat; }
-			set { _effectsDelegat = value; }
-		}
+		protected abstract void Effect(int ptr, int index);
+		//public ApplayEffectsDelegat EffectsDelegat
+		//{
+		//	get { return _effectsDelegat; }
+		//	set { _effectsDelegat = value; }
+		//}
 		public GraphicsEffectsData GraphicsEffectsData
 		{
 			get { return _graphicsEffectsData; }
@@ -78,7 +79,7 @@ namespace ImageProcessing.EffectsBase
 		{
 			for (int i = index; i < length; i += 4)
 			{
-				_effectsDelegat(_graphicsEffectsData.Pointer, i);
+				Effect(_graphicsEffectsData.Pointer, i);
 			}
 		}
 		/// <summary>
@@ -86,7 +87,7 @@ namespace ImageProcessing.EffectsBase
 		/// </summary>
 		private void Check()
 		{
-			if (_effectsDelegat == null) throw new NullReferenceException("EffectsDelegat is Null");
+			//if (_effectsDelegat == null) throw new NullReferenceException("EffectsDelegat is Null");
 			if (_graphicsEffectsData == null) throw new NullReferenceException("GraphicsEffectsData is Null");
 		}
 		/// <summary>
