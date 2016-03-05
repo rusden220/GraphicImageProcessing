@@ -60,6 +60,14 @@
     <Compile Include="ColorHistogram.Designer.cs">
       <DependentUpon>ColorHistogram.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageProcessingData.cs" />
+    <Compile Include="ImageProcessingProvider.cs" />
+    <Compile Include="MainFormNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainFormNew.Designer.cs">
+      <DependentUpon>MainFormNew.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,12 +75,13 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageProcessing\GraphicsProcessing.cs" />
-    <Compile Include="MainFormNew.cs">
+    <Compile Include="MainForm_v2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainFormNew.Designer.cs">
-      <DependentUpon>MainFormNew.cs</DependentUpon>
+    <Compile Include="MainForm_v2.Designer.cs">
+      <DependentUpon>MainForm_v2.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainMenuEffectsProvider.cs" />
     <Compile Include="Pointer\ObjectPointer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,11 +91,14 @@
     <EmbeddedResource Include="ColorHistogram.resx">
       <DependentUpon>ColorHistogram.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainFormNew.resx">
+      <DependentUpon>MainFormNew.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainFormNew.resx">
-      <DependentUpon>MainFormNew.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm_v2.resx">
+      <DependentUpon>MainForm_v2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -109,6 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GraphicsLibrary\ImageProcessing.csproj">
+      <Project>{7060c1e4-9106-4ecb-a956-aeaabfbcda1d}</Project>
+      <Name>ImageProcessing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -44,7 +44,7 @@
     <Compile Include="EffectsBase\EffectAttribute.cs" />
     <Compile Include="EffectsBase\GraphicsEffectsBase.cs" />
     <Compile Include="EffectsBase\GraphicsEffectsData.cs" />
-    <Compile Include="GraphicsFunction\StaticGraphicsFunctions.cs" />
+    <Compile Include="GraphicsFunction\GraphicsFunctions.cs" />
     <Compile Include="Effects\NoizeEffect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

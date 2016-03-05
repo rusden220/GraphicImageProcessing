@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ImageProcessing.EffectsBase 
 {
@@ -22,24 +24,28 @@ namespace ImageProcessing.EffectsBase
 		//protected ApplayEffectsDelegat _effectsDelegat;
 		protected GraphicsEffectsData _graphicsEffectsData;
 		private bool _isParallel;
-
+		private BitmapData _bitmapDataResult;// = _graphicsEffectsData.ResultBitmap.LockBits(new Rectangle(0, 0, _graphicsEffectsData.ResultBitmap.Width, _graphicsEffectsData.ResultBitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+		private BitmapData _bitmapDataOrign;
 		/// <summary>
 		/// Apply effect 
 		/// </summary>
 		public virtual void ApplyEffects()
 		{
-			Check();
 			if (_isParallel)
+			{
+				SetGraphicsData();
 				ApplyEffectsBlock(0, _graphicsEffectsData.Length);
+				UnlockGraphicsData();
+			}
 			else
-				ApplyEffectsParallel();
+				ApplyEffectsParallel();					
 		}
 		/// <summary>
 		/// parallel applying
 		/// </summary>
-		private void ApplyEffectsParallel()
+		public void ApplyEffectsParallel()
 		{
-			//Check();
+			SetGraphicsData();
 			int processorCount = Environment.ProcessorCount;
 			CountdownEvent cde = new CountdownEvent(processorCount);
 			int[] arrayLength = GetArrayLength(_graphicsEffectsData.Length, processorCount);
@@ -54,7 +60,33 @@ namespace ImageProcessing.EffectsBase
 			}
 
 		}
-		protected abstract void Effect(int ptr, int index);
+		/// <summary>
+		/// Unlock Bitmap after using
+		/// </summary>
+		private void UnlockGraphicsData()
+		{
+			_graphicsEffectsData.OriginalBitmap.UnlockBits(_bitmapDataOrign);
+			_graphicsEffectsData.ResultBitmap.UnlockBits(_bitmapDataResult);
+		}
+		/// <summary>
+		/// check and setup graphics data
+		/// </summary>
+		private void SetGraphicsData()
+		{
+			//if (_effectsDelegat == null) throw new NullReferenceException("EffectsDelegat is Null");
+			if (_graphicsEffectsData == null) throw new NullReferenceException("GraphicsEffectsData is Null");
+			if (_graphicsEffectsData.OriginalBitmap == null) throw new NullReferenceException("OriginalBitmap is Null");
+					
+			_graphicsEffectsData.ResultBitmap = new Bitmap(_graphicsEffectsData.OriginalBitmap);
+			_graphicsEffectsData.Length = _graphicsEffectsData.OriginalBitmap.Width * _graphicsEffectsData.OriginalBitmap.Height * 4;//ARGB
+
+			_bitmapDataResult = _graphicsEffectsData.ResultBitmap.LockBits(new Rectangle(0, 0, _graphicsEffectsData.ResultBitmap.Width, _graphicsEffectsData.ResultBitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			_bitmapDataOrign = _graphicsEffectsData.OriginalBitmap.LockBits(new Rectangle(0, 0, _graphicsEffectsData.OriginalBitmap.Width, _graphicsEffectsData.OriginalBitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+			_graphicsEffectsData.OriginalPointer = _bitmapDataOrign.Scan0.ToInt32();
+			_graphicsEffectsData.ResultPointer = _bitmapDataResult.Scan0.ToInt32();
+		}
+		protected abstract void Effect(int index);
 		//public ApplayEffectsDelegat EffectsDelegat
 		//{
 		//	get { return _effectsDelegat; }
@@ -65,6 +97,9 @@ namespace ImageProcessing.EffectsBase
 			get { return _graphicsEffectsData; }
 			set { _graphicsEffectsData = value; }
 		}
+		/// <summary>
+		/// whether to run the algorithm as parallel
+		/// </summary>
 		public bool isParallel
 		{
 			get { return _isParallel; }
@@ -79,16 +114,8 @@ namespace ImageProcessing.EffectsBase
 		{
 			for (int i = index; i < length; i += 4)
 			{
-				Effect(_graphicsEffectsData.Pointer, i);
+				Effect(i);
 			}
-		}
-		/// <summary>
-		/// check the variable before call
-		/// </summary>
-		private void Check()
-		{
-			//if (_effectsDelegat == null) throw new NullReferenceException("EffectsDelegat is Null");
-			if (_graphicsEffectsData == null) throw new NullReferenceException("GraphicsEffectsData is Null");
 		}
 		/// <summary>
 		/// return array of len for ApplyEffectsParallel 

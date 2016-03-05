@@ -10,9 +10,9 @@ using ImageProcessing.EffectsBase;
 namespace ImageProcessing
 {
 	/// <summary>
-	/// Graphics Function for Bitmap
+	/// Graphics function for bitmap
 	/// </summary>
-    public static class StaticGraphicsFunctions
+    public class GraphicsFunctions
     {
 		/// <summary>
 		/// Convert to byte
@@ -44,50 +44,43 @@ namespace ImageProcessing
 		/// <returns></returns>
 		public static GraphicsFunctionsDelegate[] GetAllFunctions()
 		{
-			var methods = typeof(StaticGraphicsFunctions).GetMethods(BindingFlags.Static | BindingFlags.Public);
+			var methods = typeof(GraphicsFunctions).GetMethods(BindingFlags.Static | BindingFlags.Public);
 			List<GraphicsFunctionsDelegate> result = new List<GraphicsFunctionsDelegate>();
 			foreach (var method in methods)
 			{
 				//if (method.GetCustomAttributes(typeof(EffectAttribute)) != null)
-					//result.Add((GraphicsFunctionsDelegate)method.Invoke);
-				
+					//result.Add((GraphicsFunctionsDelegate)method.Invoke);				
 			}
 			return result.ToArray();
 		}
-		/// <summary>
-		/// Make noise on bitmap
-		/// </summary>
-		/// <param name="bitmap"></param>
-		/// <param name="isParallel"></param>
-		/// <param name="noizeLevelUp"></param>
-		/// <param name="noizeLevelDown"></param>		
-		/// <returns></returns>
-		
-		public static Bitmap Noize(Bitmap bitmap, params object[] param)
+		public Bitmap Noize(Bitmap bitmap, params object[] param)
 		{
 			bool isParallel = (bool)param[0];
 			int noizeLevelUp = (int)param[1];
 			int noizeLevelDown = (int)param[2];
-
-			Bitmap result = new Bitmap(bitmap);
-			int len = bitmap.Width * bitmap.Height * 4;//ARGB
-			//get pointer of byte array in Bitmpa
-			BitmapData bitmapData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 			NoizeEffect ne = new NoizeEffect()
 			{
 				NoizeLevelDown = noizeLevelDown,
 				NoizeLevelUp = noizeLevelUp,
-				isParallel = isParallel,			
+				isParallel = isParallel,
 				GraphicsEffectsData = new GraphicsEffectsData()
-				{
-					AmountOfChannel = 4,
-					Length = len,
-					Pointer = bitmapData.Scan0.ToInt32()
-				}
+				{ OriginalBitmap = bitmap }
 			};
 			ne.ApplyEffects();
-			result.UnlockBits(bitmapData);
-			return result;
+			return ne.GraphicsEffectsData.ResultBitmap;
+		}
+		/// <summary>
+		/// Apply graphics effect
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <param name="geb"></param>
+		/// <returns></returns>
+		public static Bitmap ApplyEffect(Bitmap bitmap, GraphicsEffectsBase geb)
+		{
+			geb.GraphicsEffectsData = new GraphicsEffectsData()
+			{ OriginalBitmap = bitmap };
+			geb.ApplyEffects();
+			return geb.GraphicsEffectsData.ResultBitmap;
 		}
     }	
 }

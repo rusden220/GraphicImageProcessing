@@ -14,5 +14,6 @@ namespace GraphicImageProcessing
 		private Bitmap _lastBitmap;
 		ImageEffectData[] _arrayImageEffectData;
 
+
 	}
 }

@@ -11,15 +11,16 @@ namespace ImageProcessing.Effects
 			//EffectsDelegat = MakeNoise;
 			_random = new Random();
 		}
-		protected override void Effect(int pointer, int index)
+		protected override void Effect(int index)
 		{
 			unsafe
-			{
-				byte* ptr = (byte*)pointer;
+			{				
+				byte* ptrR = (byte*)_graphicsEffectsData.ResultPointer;
+				byte* ptrO = (byte*)_graphicsEffectsData.OriginalPointer;
 				int num = _random.Next(NoizeLevelDown, NoizeLevelUp);
-				ptr[index] = StaticGraphicsFunctions.ConvertToByte(ptr[index] + num); index++;
-				ptr[index] = StaticGraphicsFunctions.ConvertToByte(ptr[index] + num); index++;
-				ptr[index] = StaticGraphicsFunctions.ConvertToByte(ptr[index] + num);
+				ptrR[index] = GraphicsFunctions.ConvertToByte(ptrO[index] + num); index++;
+				ptrR[index] = GraphicsFunctions.ConvertToByte(ptrO[index] + num); index++;
+				ptrR[index] = GraphicsFunctions.ConvertToByte(ptrO[index] + num);
 			}
 		}
 		public int NoizeLevelDown { get; set; }
